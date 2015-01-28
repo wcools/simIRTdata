@@ -42,16 +42,3 @@ str(O2)
 str(P1)
 str(P2)
 
-
-# plot
-tmpPar <- par()
-par(bg="#202020",col="grey",col.axis="grey",col.lab="grey",col.main="grey",col.sub="grey")
-
-par(mfrow=c(1,2))
-plot(S,dnorm(S), xlab="subject proficiency", ylab="density", main="subject population values")
-plot(I,D,xlab="item difficulty",ylab="item discrimination", main="item population values",yaxt='n',type='n')
-axis(2,round(D,2),las=1,cex.axis=.6,col="grey")
-text(I,D,labels=names(I),cex=.75)
-par(mfrow=c(1,1))
-
-par(tmpPar)
