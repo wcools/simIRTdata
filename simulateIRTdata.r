@@ -8,17 +8,18 @@
 # PROFICIENCY (subject abilities)
 # set number of subjects and from uniform equidistant intervals generate z-scores to represent standard normal distribution
 nrSubjects <- 256
-S <- round(qnorm(seq(.01,(1-.01),length.out=nrSubjects),0,1),3)
+S <- round(qnorm(seq(.001,(1-.001),length.out=nrSubjects),0,1),3)
 names(S) <- paste0('s',sprintf(eval(paste0("%0",nchar(nrSubjects),"d")),1:length(S)))
 
 # DIFFICULTY & DISCRIMINATION (item properties)
 # set number of items and from uniform equidistant intervals generate scores to represent uniform distribution
-nrItems <- 64									# must be dividable by 4 and not equal to 10, 100, 1000, ... for discrimination
+nrItems <- 32									# must be dividable by 4 and not equal to 10, 100, 1000, ... for discrimination
 # difficulties
-I <- seq(-2.4,2.4,length.out=nrItems)
+I <- seq(-3,3,length.out=nrItems)
 names(I) <- paste0('i',sprintf(eval(paste0("%0",nchar(nrItems),"d")),1:length(I)))
 # discrimination
-D <- c(seq(.2,2,length.out=nrItems/4),seq(2,.2,length.out=nrItems/4),seq(2,.2,length.out=nrItems/4),seq(.2,2,length.out=nrItems/4))
+tmp <- seq(.75,1.25,length.out=nrItems/4)^4
+D <- c(tmp,tmp[length(tmp):1],tmp[length(tmp):1],tmp)
 names(D) <- names(I)
 
 # SUCCESS PROBABILITIES
@@ -41,3 +42,16 @@ str(O2)
 str(P1)
 str(P2)
 
+
+# plot
+tmpPar <- par()
+par(bg="#202020",col="grey",col.axis="grey",col.lab="grey",col.main="grey",col.sub="grey")
+
+par(mfrow=c(1,2))
+plot(S,dnorm(S), xlab="subject proficiency", ylab="density", main="subject population values")
+plot(I,D,xlab="item difficulty",ylab="item discrimination", main="item population values",yaxt='n',type='n')
+axis(2,round(D,2),las=1,cex.axis=.6,col="grey")
+text(I,D,labels=names(I),cex=.75)
+par(mfrow=c(1,1))
+
+par(tmpPar)
